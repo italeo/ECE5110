@@ -1,11 +1,12 @@
 import matplotlib
-matplotlib.use('TkAgg')  # Ensure plots show on Linux
+matplotlib.use('TkAgg')
 
 import numpy as np
 import matplotlib.pyplot as plt
 
 from functions.lsoe_solver import function_solve_lsoe
-from lib.fermentation_model import F, J
+from functions.nlsoe_solver import function_solve_nlsoe
+from lib.fermentation_model import yeast_data, F_factory, J
 
 
 def solve_with_history(F, J, x0, tol=1e-6, max_iter=50):
@@ -18,14 +19,11 @@ def solve_with_history(F, J, x0, tol=1e-6, max_iter=50):
         history.append(err)
 
         Jx = J(x)
-
-        # Use YOUR linear solver (assignment requirement)
         delta = function_solve_lsoe(Jx, -Fx)
 
         x = x + delta
 
         if err < tol:
-            # append final error again for visibility
             history.append(err)
             return x, history
 
@@ -36,35 +34,54 @@ def plot_convergence(history):
     plt.figure()
     plt.plot(range(len(history)), history, marker='o')
     plt.yscale('log')
-    plt.ylim(1e-10, 1e2)  # Makes small values visible
+    plt.ylim(1e-10, 1e2)
     plt.xlabel("Iteration")
     plt.ylabel("||F(x)||")
     plt.title("Newton Method Convergence")
     plt.grid(True)
 
 
-def plot_fluxes(solution):
-    GF, BF, RF, FF = solution
+def plot_flux_comparison(results):
+    labels = list(results.keys())
 
-    labels = ["Growth (BF)", "Respiration (RF)", "Fermentation (FF)"]
-    values = [BF, RF, FF]
+    BF_vals = [results[k][1] for k in labels]
+    RF_vals = [results[k][2] for k in labels]
+    FF_vals = [results[k][3] for k in labels]
+
+    x = np.arange(len(labels))
+    width = 0.25
 
     plt.figure()
-    plt.bar(labels, values)
+
+    plt.bar(x - width, BF_vals, width, label='Growth (BF)')
+    plt.bar(x, RF_vals, width, label='Respiration (RF)')
+    plt.bar(x + width, FF_vals, width, label='Fermentation (FF)')
+
+    plt.xticks(x, labels, rotation=15)
     plt.ylabel("Flux Value")
-    plt.title("Yeast Metabolic Flux Distribution")
+    plt.title("Flux Comparison Across Yeasts")
+    plt.legend()
 
 
 if __name__ == "__main__":
     x0 = np.array([20.0, 2.0, 2.0, 5.0])
 
-    solution, history = solve_with_history(F, J, x0)
+    results = {}
 
-    print("Solution:", solution)
-    print("History:", history)
+    # Solve for each yeast
+    for name, data in yeast_data.items():
+        F = F_factory(data)
+        solution, history = solve_with_history(F, J, x0)
 
+        print(f"\n{name}")
+        print("Solution:", solution)
+
+        results[name] = solution
+
+    # Plot ONLY one convergence (same behavior)
     plot_convergence(history)
-    plot_fluxes(solution)
 
-    # Show BOTH plots at once
+    # Plot comparison
+    plot_flux_comparison(results)
+
     plt.show()
