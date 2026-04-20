@@ -1,12 +1,8 @@
-import matplotlib
-matplotlib.use('TkAgg')
-
 import numpy as np
 import matplotlib.pyplot as plt
 
 from functions.lsoe_solver import function_solve_lsoe
-from functions.nlsoe_solver import function_solve_nlsoe
-from lib.fermentation_model import yeast_data, F_factory, J
+from lib.fermentation_model import yeast_data, F_factory, J_factory
 
 
 def solve_with_history(F, J, x0, tol=1e-6, max_iter=50):
@@ -24,7 +20,6 @@ def solve_with_history(F, J, x0, tol=1e-6, max_iter=50):
         x = x + delta
 
         if err < tol:
-            history.append(err)
             return x, history
 
     return x, history
@@ -34,7 +29,6 @@ def plot_convergence(history):
     plt.figure()
     plt.plot(range(len(history)), history, marker='o')
     plt.yscale('log')
-    plt.ylim(1e-10, 1e2)
     plt.xlabel("Iteration")
     plt.ylabel("||F(x)||")
     plt.title("Newton Method Convergence")
@@ -71,6 +65,8 @@ if __name__ == "__main__":
     # Solve for each yeast
     for name, data in yeast_data.items():
         F = F_factory(data)
+        J = J_factory(data)   # ✅ FIX HERE
+
         solution, history = solve_with_history(F, J, x0)
 
         print(f"\n{name}")
@@ -78,7 +74,7 @@ if __name__ == "__main__":
 
         results[name] = solution
 
-    # Plot ONLY one convergence (same behavior)
+    # Plot convergence (last one is fine)
     plot_convergence(history)
 
     # Plot comparison

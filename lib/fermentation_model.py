@@ -1,6 +1,9 @@
 import numpy as np
 
-# Multiple yeast datasets (from paper-style values)
+# Constants for nonlinear model
+k1 = 0.25
+k2 = 0.002
+
 yeast_data = {
     "Yeast A (Y706)": {
         "growth_rate": 2.3,
@@ -26,17 +29,21 @@ def F_factory(data):
 
         return np.array([
             GF - BF - RF - FF,
-            BF - data["growth_rate"],
-            FF - data["ethanol_rate"],
+            BF - k1 * GF * data["growth_rate"],
+            FF - k2 * GF**2 * data["ethanol_rate"],
             RF + FF - data["co2_rate"]
         ])
     return F
 
 
-def J(x):
-    return np.array([
-        [1, -1, -1, -1],
-        [0,  1,  0,  0],
-        [0,  0,  0,  1],
-        [0,  0,  1,  1]
-    ])
+def J_factory(data):
+    def J(x):
+        GF, BF, RF, FF = x
+
+        return np.array([
+            [1, -1, -1, -1],
+            [-k1 * data["growth_rate"], 1, 0, 0],
+            [-2 * k2 * GF * data["ethanol_rate"], 0, 0, 1],
+            [0, 0, 1, 1]
+        ])
+    return J
