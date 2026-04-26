@@ -6,6 +6,7 @@ from functions.lagrange import lagrange
 from functions.newton_interp import newton_interp
 from functions.cubic_spline import cubic_spline
 
+
 # ===============================
 # CHANGE DATA HERE
 # ===============================
