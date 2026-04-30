@@ -3,9 +3,8 @@ import numpy as np
 from functions.linear_systems import gaussian_elimination, lu_decomposition
 from functions.nonlinear_systems import newton_system
 
-# ===============================
 # LINEAR SYSTEM TEST
-# ===============================
+# -------------------------------
 
 A = np.array([[3, 2, -4],
               [2, 3, 3],
@@ -19,18 +18,16 @@ print("Gaussian Elimination Solution:", x)
 # Check
 print("Check Ax:", A @ x)
 
-# ===============================
 # LU DECOMPOSITION TEST
-# ===============================
+# -------------------------------
 
 L, U = lu_decomposition(A)
 print("\nL:\n", L)
 print("\nU:\n", U)
 print("\nCheck LU:\n", L @ U)
 
-# ===============================
 # NONLINEAR SYSTEM TEST
-# ===============================
+# -------------------------------
 
 def F(x):
     return np.array([

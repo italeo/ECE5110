@@ -7,43 +7,36 @@ from functions.newton_interp import newton_interp
 from functions.cubic_spline import cubic_spline
 
 
-# ===============================
-# CHANGE DATA HERE
-# ===============================
 
+# CHANGE DATA HERE
+# -------------------------------
 x_data = np.array([1, 2, 3, 4])
-y_data = np.array([1, 3, 2, 8])
+y_data = np.array([1, 3, 5, 8])
 
 x_vals = np.linspace(1, 4, 200)
 
-# ===============================
 # LEAST SQUARES
-# ===============================
-
+# -------------------------------
 a, b = least_squares(x_data, y_data)
 y_ls = a*x_vals + b
 
-# ===============================
 # LAGRANGE
-# ===============================
+# -------------------------------
 
 y_lagrange = [lagrange(x_data, y_data, x) for x in x_vals]
 
-# ===============================
 # NEWTON
-# ===============================
+# -------------------------------
 
 y_newton = [newton_interp(x_data, y_data, x) for x in x_vals]
 
-# ===============================
 # SPLINE
-# ===============================
+# -------------------------------
 
 y_spline = [cubic_spline(x_data, y_data, x) for x in x_vals]
 
-# ===============================
 # PLOT 1: LEAST SQUARES
-# ===============================
+# -------------------------------
 
 plt.figure(figsize=(6,4))
 plt.scatter(x_data, y_data, color='black', label="Data Points")
@@ -54,9 +47,8 @@ plt.legend()
 plt.grid()
 
 
-# ===============================
 # PLOT 2: LAGRANGE
-# ===============================
+# -------------------------------
 
 plt.figure(figsize=(6,4))
 plt.scatter(x_data, y_data, color='black', label="Data Points")
@@ -67,9 +59,8 @@ plt.legend()
 plt.grid()
 
 
-# ===============================
 # PLOT 3: NEWTON
-# ===============================
+# -------------------------------
 
 plt.figure(figsize=(6,4))
 plt.scatter(x_data, y_data, color='black', label="Data Points")
@@ -80,9 +71,8 @@ plt.legend()
 plt.grid()
 
 
-# ===============================
 # PLOT 4: CUBIC SPLINE
-# ===============================
+# -------------------------------
 
 plt.figure(figsize=(6,4))
 plt.scatter(x_data, y_data, color='black', label="Data Points")

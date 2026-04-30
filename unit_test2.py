@@ -4,9 +4,8 @@ import matplotlib.pyplot as plt
 from functions.differentiation import forward_diff, central_diff
 from functions.integration import midpoint, trapezoidal
 
-# ===============================
 # TEST FUNCTION
-# ===============================
+# -------------------------------
 
 def f(x):
     return np.sin(x)
@@ -32,9 +31,8 @@ def integral_exact(a, b):
 # def df_exact(x): return 1/x
 # def integral_exact(a, b): return b*np.log(b) - b - (a*np.log(a) - a)
 
-# ===============================
 # DIFFERENTIATION TEST
-# ===============================
+# -------------------------------
 
 x0 = 1.0
 h_vals = np.logspace(-6, -1, 50)
@@ -62,9 +60,8 @@ plt.legend()
 plt.grid()
 
 
-# ===============================
 # INTEGRATION TEST
-# ===============================
+# -------------------------------
 
 a, b = 0, np.pi
 n_vals = range(10, 1000, 10)

@@ -5,9 +5,8 @@ from functions.bisection import bisection
 from functions.fixed_point import fixed_point
 from functions.newton_root import newton_root
 
-# ===============================
 # CHANGE THIS FUNCTION
-# ===============================
+# -------------------------------
 
 def f(x):
     return np.sqrt(x) - np.cos(x)
@@ -24,10 +23,8 @@ a = 0
 b = 1
 x0 = 0.5
 
-# ===============================
 # RUN METHODS
-# ===============================
-
+# -------------------------------
 root_bis, hist_bis = bisection(f, a, b)
 root_fp, hist_fp = fixed_point(g, x0)
 root_newton, hist_newton = newton_root(f, df, x0)
@@ -36,17 +33,14 @@ print("Bisection Root:", root_bis)
 print("Fixed Point Root:", root_fp)
 print("Newton Root:", root_newton)
 
-# ===============================
-# COMMON FUNCTION PLOT DATA
-# ===============================
 
+# COMMON FUNCTION PLOT DATA
+# -------------------------------
 x_vals = np.linspace(0.001, 1, 400)  # avoid sqrt(0) issues
 y_vals = f(x_vals)
 
-# ===============================
 # GRAPH 1: BISECTION
-# ===============================
-
+# -------------------------------
 plt.figure()
 plt.plot(x_vals, y_vals, label="f(x)")
 plt.axhline(0)
@@ -61,9 +55,8 @@ plt.title("Bisection Method")
 plt.legend()
 plt.grid()
 
-# ===============================
 # GRAPH 2: FIXED POINT
-# ===============================
+# -------------------------------
 
 plt.figure()
 plt.plot(x_vals, y_vals, label="f(x)")
@@ -79,9 +72,8 @@ plt.title("Fixed Point Method")
 plt.legend()
 plt.grid()
 
-# ===============================
 # GRAPH 3: NEWTON METHOD
-# ===============================
+# -------------------------------
 
 plt.figure()
 plt.plot(x_vals, y_vals, label="f(x)")
